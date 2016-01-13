@@ -70,7 +70,7 @@
 	"files": {
 		"syslog": {
 			"display" : "Syslog",
-			"path"    : "/var/log/syslog-net.log",
+			"path"    : "/var/log/net/syslog.log",
 			"refresh" : 20,
 			"max"     : 20,
 			"notify"  : false,

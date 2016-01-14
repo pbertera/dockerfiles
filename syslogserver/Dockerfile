@@ -15,7 +15,7 @@ RUN sed -i -e 's/#$ModLoad\ imudp/$ModLoad\ imudp/' -e 's/#$UDPServerRun\ 514/$U
 RUN sed -i -e 's/$ActionFileDefaultTemplate\ RSYSLOG_TraditionalFileFormat/$ActionFileDefaultTemplate\ RSYSLOG_SyslogProtocol23Format/' /etc/rsyslog.conf
 
 RUN mkdir -p /var/log/net/
-
+RUN chown syslog:adm /var/log/net/
 RUN adduser www-data adm
 
 COPY nginx-default /etc/nginx/sites-enabled/default

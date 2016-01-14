@@ -36,11 +36,10 @@ server {
         # include /etc/nginx/naxsi.rules
     }
 
-    location /doc/ {
-        alias /usr/share/doc/;
-        autoindex on;
-        allow 127.0.0.1;
-        deny all;
+    location /syslog.log {
+        alias /var/log/net/syslog.log;
+        auth_basic "Restricted";
+        auth_basic_user_file /etc/nginx/.htpasswd;
     }
 
     # Only for nginx-naxsi : process denied requests

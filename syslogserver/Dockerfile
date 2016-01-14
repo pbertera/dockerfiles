@@ -14,8 +14,8 @@ RUN sed -i 's/^variables_order\ =.*/variables_order\ =\ \"GPCSE\"'/ /etc/php5/cl
 RUN sed -i -e 's/#$ModLoad\ imudp/$ModLoad\ imudp/' -e 's/#$UDPServerRun\ 514/$UDPServerRun\ 514/' /etc/rsyslog.conf
 RUN sed -i -e 's/$ActionFileDefaultTemplate\ RSYSLOG_TraditionalFileFormat/$ActionFileDefaultTemplate\ RSYSLOG_SyslogProtocol23Format/' /etc/rsyslog.conf
 
-RUN mkdir -p /var/log/net/
-RUN chown syslog:adm /var/log/net/
+RUN mkdir -p /var/log/net/ && touch /var/log/net/syslog.log && ln -s /var/log/net/syslog.log /var/www/
+RUN chown -R syslog:adm /var/log/net/
 RUN adduser www-data adm
 
 COPY nginx-default /etc/nginx/sites-enabled/default

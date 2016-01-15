@@ -28,8 +28,7 @@ with data stored in `/data/ldap` on the host, use the following:
                -e LDAP_DOMAIN=mycorp.com \
                -e LDAP_ORGANISATION="My Mega Corporation" \
                -e LDAP_ROOTPASS=s3cr3tpassw0rd \
-                
-               -d nickstenning/slapd
+               -d pbertera/lapdserver
 
 You could then load an LDIF file (to set up your directory) like so:
 

@@ -1,0 +1,115 @@
+#!/usr/bin/python
+
+import json
+import argparse
+import sys
+import subprocess
+import logging
+import logging.config
+
+from docker import Client
+from docker import errors as DockerError
+
+def run_command(command):
+    logging.debug('Executing command: "{0}"'.format(' '.join(command)))
+    try:
+        output = subprocess.check_output(command)
+        for line in output.split('\n'):
+            logging.info('Command output: {0}'.format(line))
+    except subprocess.CalledProcessError, e:
+        logging.error('Command returned non-zero: {0}'.format(e))
+
+
+parser = argparse.ArgumentParser(description='Syslog server containers management')
+parser.add_argument('--config', '-c', help='Config file', action='store',
+        required=True)
+
+subparsers = parser.add_subparsers(dest='command', help='Commands')
+
+list_parser = subparsers.add_parser('ls', help='List containers')
+
+run_parser = subparsers.add_parser('run', help='Allocate a container')
+run_parser.add_argument('--id', help='Container ID', action='store', default=None)
+#run_parser.add_argument('--noexit', help='Don\'t wait for the Container: run the container and then exit', action='store_true', default=False)
+
+kill_parser = subparsers.add_parser('kill', help='Kill a container')
+kill_parser.add_argument('--id', help='Container ID', action='store', required=True)
+
+args = parser.parse_args()
+
+try:
+    config = json.load(open(args.config))
+except Exception, e:
+    print('ERROR during parsing config file: {0}'.format(e))
+    sys.exit(-1)
+
+logging.config.dictConfig(config['logging'])
+
+cli = Client(base_url=config['docker_url'], version='auto')
+
+if args.command == 'ls':
+    containers = cli.containers(filters={'status': 'running'})
+    for c in containers:
+        if c["Image"] != config['image']:
+            continue
+        logging.info('Container {0} is running'.format(''.join(c['Names'])))
+
+elif args.command == 'run':
+    for slot in config['pool']:
+        if args.id and (slot['id'] != args.id):
+            continue
+        try:
+            slot_status = cli.inspect_container(slot['id'])
+            if slot_status['State']['Running'] == True or\
+                slot_status['State']['Restarting'] == True or\
+                slot_status['State']['Paused']:
+                logging.warning('Container {0} is already running'.format(slot['id']))
+            else:
+                logging.warning('Containter {0} is present but stopped, will be removed'.format(slot['id']))
+                cli.remove_container(container=slot['id'], force=True)
+
+        except DockerError.NotFound:
+            try:
+                if slot.has_key('pre_run_command'):
+                    run_command(slot['pre_run_command'])
+
+                container = cli.create_container(name=slot['id'],
+                    image=config['image'], detach=False,
+                    host_config=cli.create_host_config(**slot['host_config']),
+                    environment=slot['environment'])
+
+                cli.start(container=container.get('Id'))
+                logging.info('Container {0} started'.format(slot['id']))
+
+                if slot.has_key('post_run_command'):
+                    run_command(slot['post_run_command'])
+
+                sys.exit(1)
+
+            except Exception, e:
+                logging.error("Failed allocating container {0}".format(slot['id']))
+                logging.debug("Execption: {0}".format(e))
+
+                if slot.has_key('failed_run_command'):
+                    run_command(slot['failed_run_command'])
+
+            continue
+    logging.error("No available containers found")
+
+elif args.command == 'kill':
+    for slot in config['pool']:
+        if slot['id'] == args.id:
+            if slot.has_key('pre_kill_command'):
+                run_command(slot['pre_kill_command'])
+            try:
+                cli.stop(args.id)
+            except DockerError.NotFound:
+                logging.error('Container {0} not found'.format(args.id))
+                continue
+
+            logging.info('Container {0} stopped'.format(slot['id']))
+            cli.remove_container(container=args.id, force=True)
+            logging.warning('Containter {0} removed'.format(slot['id']))
+
+            if slot.has_key('post_kill_command'):
+                run_command(slot['post_kill_command'])

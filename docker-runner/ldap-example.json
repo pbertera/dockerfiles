@@ -1,0 +1,46 @@
+{
+    "image": "pbertera/ldapserver",
+    "docker_url": "unix://var/run/docker.sock",
+    "logging": {
+        "version": 1,
+        "formatters": {
+            "simple": {
+                "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+            }
+        },
+        "handlers": {
+            "console": {
+                "formatter": "simple",
+                "class": "logging.StreamHandler",
+                "level": "INFO",
+                "stream": "ext://sys.stdout"
+            }
+        },
+        "root": {
+            "level": "DEBUG",
+            "handlers": ["console"]
+        }
+    },
+    "pool": [
+        {
+            "id": "ldap1",
+            "environment": {
+		        "LDAP_DOMAIN": "ldap1.example.com",
+		        "LDAP_ORGANISATION": "Ldap1",
+		        "LDAP_ROOTPASS": "s3cr3tpassw0rd"
+		    },
+            "host_config": {"port_bindings": {"389": 2389, "80": 2080}},
+            "post_run_command": ["echo", "Listening on 2389 for LDAP and 2080 Web LDAP-Admin\nCredentials: admin DN: dc=ldap1,dc=example,dc=com, admin pass s3cr3tpassw0rd"]
+        },
+        {
+            "id": "ldap2",
+            "environment": {
+		        "LDAP_DOMAIN": "ldap2.example.com",
+		        "LDAP_ORGANISATION": "Ldap2",
+		        "LDAP_ROOTPASS": "s3cr3tpassw0rd"
+		    },
+            "host_config": {"port_bindings": {"389": 2390, "80": 2081}},
+            "post_run_command": ["echo", "Listening on 2390 for LDAP and 2081 Web LDAP-Admin\nCredentials: admin DN: dc=ldap2,dc=example,dc=com, admin pass s3cr3tpassw0rd"]
+        }
+    ]
+}

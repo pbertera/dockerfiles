@@ -22,7 +22,11 @@ For each instance you can define pre, post and failure exec command hooks.
 
 The following JSON configures a pool of **pbertera/ldapserver** containers:
 
+<<<<<<< HEAD
 ´´´
+=======
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 {
     "image": "pbertera/ldapserver",
     "docker_url": "unix://var/run/docker.sock",
@@ -69,12 +73,17 @@ The following JSON configures a pool of **pbertera/ldapserver** containers:
         }
     ]
 }
+<<<<<<< HEAD
 ´´´
+=======
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 
 ## Executing:
 
 **Run the first free container in a pool:**
 
+<<<<<<< HEAD
 ´´´
 sudo ./docker-runner -c ldap.json run
 ´´´
@@ -96,20 +105,53 @@ sudo ./docker-runner -c ldap.json ls
 ´´´
 sudo ./docker-runner -c ldap.json kill --id ldap2
 ´´´
+=======
+```
+sudo ./docker-runner -c ldap.json run
+```
+
+**Run a specific container instance:**
+
+```
+sudo ./docker-runner -c ldap.json run --id ldap2
+```
+
+**List all the running containers in a pool:**
+
+```
+sudo ./docker-runner -c ldap.json ls
+```
+
+**Kill a container:**
+
+```
+sudo ./docker-runner -c ldap.json kill --id ldap2
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 
 ## Running in Docker
 
 **Build the container**
 
+<<<<<<< HEAD
 ´´´
 sudo docker build -t pbertera/docker-runner .
 ´´´
+=======
+```
+sudo docker build -t pbertera/docker-runner .
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 
 **Run the container**
 
 You have to mount the Docker daemon socket and the volume containing the pool definitions and then you can run the container:
 
+<<<<<<< HEAD
 ´´´
+=======
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 $ sudo docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/data pbertera/docker-runner -c ldap.json ls
 2016-02-17 22:39:49,106 - root - INFO - Container /ldap2 is running
 2016-02-17 22:39:49,107 - root - INFO - Container /ldap1 is running
@@ -117,12 +159,22 @@ $ sudo docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:
 $ sudo docker run --rm -it -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/data pbertera/docker-runner -c ldap.json kill --id ldap1
 2016-02-17 22:40:15,037 - root - INFO - Container ldap1 stopped
 2016-02-17 22:40:15,059 - root - WARNING - Containter ldap1 removed
+<<<<<<< HEAD
 ´´´
+=======
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479
 
 ## SSH Wrapper
 
 **.ssh/authorized_keys**
 
+<<<<<<< HEAD
 ´´´
 command="/opt/docker-runner/ssh-wrapper.sh",no-port-forwarding,no-agent-forwarding,no-X11-forwarding ssh-dss [... your SSH public key here ...]
 ´´´
+=======
+```
+command="/opt/docker-runner/ssh-wrapper.sh",no-port-forwarding,no-agent-forwarding,no-X11-forwarding ssh-dss [... your SSH public key here ...]
+```
+>>>>>>> 79c1f616bab63490a212661b181162e973702479

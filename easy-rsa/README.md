@@ -4,7 +4,7 @@ this container runs the easy-rsa OpenVPN script in a container
 
 ## Example:
 
-´´´
+```
 is_running () 
 { 
     local name=$1;
@@ -45,4 +45,4 @@ easy-rsa ()
     fi;
     docker run --rm -it -v $EASY_RSA_PKI:/easy-rsa ${env_file} --name ${name} pbertera/easy-rsa $@
 }
-´´´
+```

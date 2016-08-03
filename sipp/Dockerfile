@@ -1,19 +1,17 @@
-FROM alpine:latest
-MAINTAINER = Pietro Bertera <pietro@bertera.it>
+FROM debian:jessie
 
-RUN apk update && apk add build-base bash libgc++ boost-dev\
-    libpcap-dev openssl-dev lksctp-tools-dev ncurses-dev \
-    && rm -rf /var/cache/apk/*
+MAINTAINER Pietro Bertera <pietro@bertera.it>
+ENV SIPP_VERSION 3.5.1
 
-ADD https://github.com/SIPp/sipp/archive/v3.4.1.tar.gz /
-RUN tar -xzf /v3.4.1.tar.gz
+# installation of packets needed for installation
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends build-essential curl automake ncurses-dev libssl-dev libsctp-dev libpcap-dev && \
+    rm -rf /var/lib/apt/lists/*
 
-WORKDIR /sipp-3.4.1
-RUN ./configure --with-pcap --with-sctp --with-openssl --with-rtpstream
-RUN make install
+RUN mkdir /build && \
+    cd /build && \
+    curl -sqLkv https://github.com/SIPp/sipp/releases/download/v3.5.1/sipp-${SIPP_VERSION}.tar.gz | tar xvzf - --strip-components=1 && \
+    ./build.sh --with-openssl --with-pcap --with-rtpstream --with-sctp && \
+    mv sipp /usr/bin
 
-WORKDIR /
-RUN rm -rf v3.4.1.tar
-RUN rm -rf sipp-3.4.1
-
-CMD sipp
+ENTRYPOINT [ "sipp" ]

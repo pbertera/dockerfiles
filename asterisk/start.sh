@@ -6,6 +6,11 @@ status () {
   echo "---> ${@}" >&2
 }
 
+if [[ -n "$AST_SKIP_CONF" ]]; then
+    status "Skipping pre-conf"
+    touch /var/lib/asterisk/docker_bootstrapped
+fi
+
 if [[ -n "$AST_OVERRIDE_CONF" ]]; then
     status "Overriding the configuration!"
     rm -f /var/lib/asterisk/docker_bootstrapped

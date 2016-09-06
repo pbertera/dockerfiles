@@ -8,6 +8,8 @@ This container is inspired by [this one](https://github.com/renan/powerdns-docke
 
 Running the service with a custom API key (if `API_KEY` is not provided the key is `changeme`).
 
+The HTTP API will listen by default on the port `8081` you can overwrite it defining the enviroment variable `WEB_PORT`.
+
 ```
 docker run -it -e API_KEY=MyAPIKey -p 80:80 -p 53:53 -p 53:53/udp pbertera/pdns
 ```
@@ -20,7 +22,17 @@ Zone database is store in `/data/pdns.db` you can mount a volume over it:
 docker run -it -v $(pwd)/pdns.db:/data/pdns.db -e API_KEY=MyAPIKey -p 80:80 -p 53:53 -p 53:53/udp pbertera/pdns
 ```
 
-## Creating the first zone
+## Managing the server using the pdns.py script
+
+This docker container comes with the [pdns.py](https://github.com/pbertera/PowerDNS-CLI) CLI script. The script use by default the `API_KEY` and the `WEB_PORT` environment variables:
+
+```
+$ docker exec -it pdns pdns.py query_config
+```
+
+For more info about the `pdns.py` usage please refer to the [repository page](https://github.com/pbertera/PowerDNS-CLI)
+
+## Managing the server using REST API
 
 Create the zone:
 

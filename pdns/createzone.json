@@ -1,0 +1,8 @@
+{
+  "name": "snomlabo.int.",
+  "kind": "Native",
+  "masters": [],
+  "nameservers": [
+    "ns1.snomlabo.int."
+  ]
+}

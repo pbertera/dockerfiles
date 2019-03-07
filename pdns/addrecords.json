@@ -1,0 +1,88 @@
+{
+  "rrsets": [
+    {
+      "name": "snomlabo.int.",
+      "type": "NS",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "ns.snomlabo.int.",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "snomlabo.int.",
+      "type": "NAPTR",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "10 10 \"S\" \"SIP+D2U\" \"\" _sip._udp.snomlabo.int.",
+          "disabled": false
+        },
+        {
+          "content": "20 10 \"S\" \"SIP+D2T\" \"\" _sip._tcp.snomlabo.int.",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "_sip._udp.snomlabo.int.",
+      "type": "SRV",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "20 50 5060 pbx2.snomlabo.int.",
+          "disabled": false
+        },
+        {
+          "content": "10 50 5060 pbx1.snomlabo.int.",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "_sip._tcp.snomlabo.int.",
+      "type": "SRV",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "20 50 5060 pbx2.snomlabo.int.",
+          "disabled": false
+        },
+        {
+          "content": "10 50 5060 pbx1.snomlabo.int.",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "pbx1.snomlabo.int.",
+      "type": "A",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "172.16.18.5",
+          "disabled": false
+        }
+      ]
+    },
+    {
+      "name": "pbx2.snomlabo.int.",
+      "type": "A",
+      "ttl": 86400,
+      "changetype": "REPLACE",
+      "records": [
+        {
+          "content": "172.16.18.15",
+          "disabled": false
+        }
+      ]
+    }
+  ]
+}

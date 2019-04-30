@@ -1,0 +1,13 @@
+--- src/resolve.c.orig
++++ src/resolve.c
+@@ -22,7 +22,9 @@
+ 
+ #include <arpa/inet.h>
+ #include <netinet/in.h>
+-
++#include <stdio.h>
++#include <stdint.h>
++#include <sys/types.h>
+ #include <arpa/nameser.h>
+ #ifdef __APPLE__
+ #include <arpa/nameser_compat.h>

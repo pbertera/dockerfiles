@@ -30,20 +30,20 @@ RUN mkdir ~/ffmpeg_sources
 WORKDIR ~/ffmpeg_sources
 
 # libx265
-RUN apt-get install -y cmake mercurial && \
-	cd ~/ffmpeg_sources && \
-	hg clone https://bitbucket.org/multicoreware/x265 && \
-	cd ~/ffmpeg_sources/x265/build/linux && \
-	PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source && \
-	make && \
-	make install && \
-	make clean && \
-	cd ~/ffmpeg_sources && \
-	rm -rf /ffmpeg_sources/x265
+#RUN apt-get install -y cmake mercurial && \
+#	cd ~/ffmpeg_sources && \
+#	hg clone http://bitbucket.org/multicoreware/x265 && \
+#	cd ~/ffmpeg_sources/x265/build/linux && \
+#	PATH="$HOME/bin:$PATH" cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX="$HOME/ffmpeg_build" -DENABLE_SHARED:bool=off ../../source && \
+#	make && \
+#	make install && \
+#	make clean && \
+#	cd ~/ffmpeg_sources && \
+#	rm -rf /ffmpeg_sources/x265
 	
 # libfdk-aac
 RUN cd ~/ffmpeg_sources && \
-	wget -O fdk-aac.tar.gz https://github.com/mstorsjo/fdk-aac/tarball/master && \
+	wget -O fdk-aac.tar.gz --no-check-certificate https://github.com/mstorsjo/fdk-aac/tarball/master && \
 	tar xzvf fdk-aac.tar.gz && \
 	cd mstorsjo-fdk-aac* && \
 	autoreconf -fiv && \
@@ -87,7 +87,7 @@ RUN cd ~/ffmpeg_sources && \
 	  --enable-libvorbis \
 	  --enable-libvpx \
 	  --enable-libx264 \
-	  --enable-libx265 \
+#	  --enable-libx265 \
 	  --enable-nonfree && \
 	PATH="$HOME/bin:$PATH" make && \
 	make install && \

@@ -1,2 +1,2 @@
-FROM registry.redhat.io/rhel8/support-tools 
+FROM registry.access.redhat.com/ubi8 
 RUN dnf install -y socat

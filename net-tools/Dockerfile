@@ -1,2 +1,2 @@
 FROM registry.access.redhat.com/ubi8 
-RUN dnf install -y socat iputils bind-utils-32 nginx-1
+RUN dnf install -y socat iputils bind-utils nginx
